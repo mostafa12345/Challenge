@@ -1,27 +1,65 @@
-# Challenge
+# Overview
 
-## Overview
+This repository contains a PHP Laravel API and a Nuxt.js Client. The setup includes Dockerfiles for both the API and Client, and a Docker Compose file to orchestrate the services. The API connects to a MySQL database, and an Nginx web server acts as a proxy, forwarding requests to the Client. Additionally, a self-signed certificate is generated for the Nginx web server to listen on port 443.
+   
+**Dockerfiles**
+**PHP Laravel API Dockerfile**
 
-This repository contains a simple web application with two main components:
+The Dockerfile for the PHP Laravel API is located in the api directory.
 
-1. **API**: Written in Laravel PHP, the API serves as the backend for the application and listens on port 8000.
-2. **Client**: Developed using Nuxt.js, the client is the frontend of the application and listens on port 3000.
+**Nuxt.js Client Dockerfile**
 
-### Environment Variables
+The Dockerfile for the Nuxt.js Client is located in the client directory.
 
-- **API Directory**: Take a look at the `.env` file in the API directory. It should contain the necessary credentials to connect to the database.
+**Docker Compose File**
 
-  ```env
-    DB_CONNECTION=mysql
-    DB_HOST=db
-    DB_PORT=3306
-    DB_DATABASE=bookapi
-    DB_USERNAME=app
-    DB_PASSWORD=password
-  ```
+The docker-compose.yml file at the root directory orchestrates the services, including MySQL, the Laravel API, the Nuxt.js Client, and Nginx.
 
-- **Client Directory**: Check the `.env` file in the Client directory. It should contain the connection string to connect to the API.
+**Self-Signed Certificate**
 
-  ```env
-    VITE_API_URL=http://api:8000
-  ```
+A self-signed SSL certificate is generated for the Nginx server to make it listen on port 443.
+Steps to Run the Project
+Prerequisites
+
+**Ensure you have the following installed:**
+
+    Docker
+    Docker Compose
+    OpenSSL (for generating the self-signed certificate)
+
+**Step 1: Clone the Repository**
+
+**Clone the repository to your local machine:**
+
+    git clone https://github.com/your-repository.git
+    cd your-repository
+
+
+**Step 2: Build and Run the Containers**
+
+    Navigate to the root directory and run:
+    docker-compose up --build -d 
+    docker-compose up -d 
+
+**This command will:**
+
+    Build the Docker images for the API and Client
+    Start the containers for MySQL, the Laravel API, the Nuxt.js Client, and Nginx
+
+**Step 4: Access the Application**
+
+    The API is accessible at http://localhost:8000
+    The Client is accessible at http://localhost
+    The Nginx server with the self-signed SSL certificate is accessible at https://localhost
+
+**CI/CD using GitHub Actions**
+
+The project includes a GitHub Actions workflow to automate the process of building and pushing Docker images to Docker Hub.
+Set Up GitHub Actions
+
+    Ensure you have a Docker Hub account.
+    Add your Docker Hub credentials to the GitHub repository secrets:
+        DOCKER_USERNAME: Your Docker Hub username
+        DOCKER_PASSWORD: Your Docker Hub password
+
+The workflow will automatically run on each push to the main branch, building and pushing the Docker images for the API and Client to Docker Hub.
