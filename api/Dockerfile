@@ -36,10 +36,10 @@ COPY .env .env
 
 # Set permissions for storage and cache
 RUN chown -R www-data:www-data /var/www/html/api/storage /var/www/html/api/bootstrap/cache
-
+RUN curl -L https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -C /usr/local/bin -xzv
 # Expose port 8000
 EXPOSE 8000
 
 # Command to run the PHP application
-CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
+CMD ["sh", "-c", "dockerize -wait tcp://db:3306 -timeout 60s && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"]
 
